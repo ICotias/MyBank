@@ -1,4 +1,4 @@
-package com.mybank
+package com.iagocotias.myBank
 
 import android.os.Build
 import android.os.Bundle

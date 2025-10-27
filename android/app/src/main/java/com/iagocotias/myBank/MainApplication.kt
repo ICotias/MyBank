@@ -1,4 +1,4 @@
-package com.mybank
+package com.iagocotias.myBank
 
 import android.app.Application
 import android.content.res.Configuration

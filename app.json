@@ -2,6 +2,24 @@
   "expo": {
     "name": "myBank",
     "slug": "myBank",
-    "version": "1.0.0"
+    "scheme": "myBank",
+    "version": "1.0.0",
+    "android": {
+      "package": "com.iagocotias.myBank",
+      "edgeToEdge": true,
+      "adaptiveIcon": {
+        "backgroundColor": "#000000",
+        "foregroundImage": "./assets/adaptive-icon.png"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.iagocotias.myBank",
+      "icon": "./assets/ios-icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-sqlite"
+    ]
   }
 }
