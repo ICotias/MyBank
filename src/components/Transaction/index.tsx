@@ -43,7 +43,7 @@ export function Transaction({ data, onRemove }: Props) {
         </Text>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onRemove}>
         <MaterialIcons name="close" size={18} color={colors.gray[500]} />
       </TouchableOpacity>
     </View>

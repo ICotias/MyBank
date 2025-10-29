@@ -8,13 +8,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 type PageHeaderProps = {
   title: string;
   subtitle?: string;
-  rightbutton?: {
+  rightButton?: {
     onPress: () => void;
     icon: keyof typeof MaterialIcons.glyphMap;
   };
 };
 
-export function PageHeader({ title, subtitle, rightbutton }: PageHeaderProps) {
+export function PageHeader({ title, subtitle, rightButton }: PageHeaderProps) {
   const { top } = useSafeAreaInsets();
   return (
     <View style={[styles.container, { paddingTop: top }]}>
@@ -23,10 +23,10 @@ export function PageHeader({ title, subtitle, rightbutton }: PageHeaderProps) {
           <MaterialIcons name="arrow-back" size={32} color={colors.black} />
         </TouchableOpacity>
 
-        {rightbutton && (
-          <TouchableOpacity onPress={rightbutton.onPress}>
+        {rightButton && (
+          <TouchableOpacity onPress={rightButton.onPress}>
             <MaterialIcons
-              name={rightbutton.icon}
+              name={rightButton.icon}
               size={24}
               color={colors.gray[500]}
             />

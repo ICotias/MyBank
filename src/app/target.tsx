@@ -3,11 +3,10 @@ import { Button } from "@/components/Button";
 import { PageHeader } from "@/components/PageHeader";
 import { CurrencyInput } from "@/components/CurrencyInput ";
 
-import { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { Alert, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, StyleSheet, View, StatusBar } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import { useTargetDatabase } from "@/database/useTargetDatabase";
+import { useTargetDatabase } from "@/database/useTargetsDatabase";
 
 export default function Target() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -16,6 +15,22 @@ export default function Target() {
 
   const params = useLocalSearchParams<{ id?: string }>();
   const targetDatabase = useTargetDatabase();
+
+  async function update() {
+    try {
+      await targetDatabase.update({ id: Number(params.id), name, amount });
+      Alert.alert("Sucesso!", "Meta atualizada com sucesso!", [
+        {
+          text: "Ok",
+          onPress: router.back,
+        },
+      ]);
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível atualizar a meta.");
+      console.log(error);
+      setIsProcessing(false);
+    }
+  }
 
   async function create() {
     await targetDatabase.create({ name, amount });
@@ -43,17 +58,70 @@ export default function Target() {
     setIsProcessing(true);
 
     if (params.id) {
-      //update
+      update();
     } else {
       create();
     }
   }
+
+  async function fetchDetails(id: number) {
+    try {
+      const response = await targetDatabase.show(id);
+      setName(response.name);
+      setAmount(response.amount);
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível carregar os detalhes da meta.");
+      console.log(error);
+    }
+  }
+
+  async function handleRemove() {
+    if (!params.id) {
+      return;
+    }
+    Alert.alert("Remover", "Deseja realmente remover?", [
+      {
+        text: "Não",
+        style: "cancel",
+      },
+      {
+        text: "Sim",
+        onPress: remove,
+      },
+    ]);
+
+    async function remove() {
+      try {
+        setIsProcessing(true);
+
+        await targetDatabase.remove(Number(params.id));
+        Alert.alert("Meta", "Meta removida.", [
+          { text: "Ok", onPress: () => router.navigate("/") },
+        ]);
+      } catch (error) {
+        Alert.alert("Erro", "Não foi possível remover a meta.");
+        console.log(error);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (params.id) {
+      fetchDetails(Number(params.id));
+    }
+  }, [params.id]);
+
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar barStyle="dark-content" />
       <PageHeader
         title="Meta"
         subtitle="Economize para alcançar sua meta financeira "
+        rightButton={
+          params.id
+            ? { icon: "delete", onPress: () => handleRemove() }
+            : undefined
+        }
       />
       <View style={{ marginTop: 32, gap: 24 }}>
         <Input

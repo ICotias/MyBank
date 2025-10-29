@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
         flex: 1
     },
     listContent: {
-
         paddingBottom: 72,
     },
     title: {
@@ -19,7 +18,7 @@ export const styles = StyleSheet.create({
         fontFamily: fontFamily.medium,
         color: colors.black,
     },
-    empty: { fontSize: 14, },
+    empty: { marginTop: 24, fontSize: 14, alignSelf: "center" },
 
 
 })
